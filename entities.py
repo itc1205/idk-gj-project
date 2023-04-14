@@ -4,6 +4,8 @@ from pygame.surface import Surface
 from pygame.event import Event  # For syntax highlight
 from pygame.key import ScancodeWrapper  # For syntax highlight
 from pygame.image import load
+from pygame.mixer import Sound
+
 
 from config import CFG, THEME
 from particles import Particle, SpaceshipParticle, DeathParticle, BulletParticle
@@ -47,9 +49,12 @@ class Bullet(Sprite):
 
 
 class Spaceship(Sprite):
+    piu_sound = Sound("assets/sfx/piu.wav")
+    death_sound = Sound("assets/sfx/playerdeath.wav")
+    piu_sound.set_volume(0.4)
     def __init__(self, x=100, y=100, pt: Group = Group()):
         Sprite.__init__(self)
-
+        
         self.speed = 5
         self.image = load("assets/sprites/airkiller2.png")
 
@@ -59,7 +64,8 @@ class Spaceship(Sprite):
         self.particles = pt
         self.bullets = Group()
         self.bt = 0
-
+        self.damage = 50
+        
     def try_move_left(self):
         if self.rect.x - self.speed < 0:
             return
@@ -120,31 +126,49 @@ class Spaceship(Sprite):
         self.bt += 1
         if self.bt % 10 != 0:
             return
+        self.piu_sound.stop()
+        self.piu_sound.play()
         bullet = Bullet(self.rect.centerx - 8, self.rect.topleft[1], self.particles)
         self.bullets.add(bullet)
 
+    def kill(self):
+        
+        super().kill()
+    
 
 class Enemy(Spaceship):
-    def __init__(self, x=10, y=10, h=20, w=20, pt: Group = Group()):
+    death_sound = Sound("assets/sfx/playerdeath.wav")
+    hit_sound = Sound("assets/sfx/hits.wav")
+    def __init__(self, x=10, y=10, h=20, w=20, pt: Group = Group(), hp:int = 100):
         super().__init__(x, y, pt)
         self.image = Surface((h, w))
         self.image.fill(THEME.WHITE)
-
+        self.hp = hp
+        
     def update(self, sc: Surface):
-        (x, y) = randint(0, 1), randint(0, 1)
-        if x == 0:
-            self.try_move_down()
-        if x == 1:
-            self.try_move_up()
-        if y == 0:
-            self.try_move_left()
-        if y == 1:
-            self.try_move_right()
+        #(x, y) = randint(0, 1), randint(0, 1)
+        #if x == 0:
+        #    self.try_move_down()
+        #if x == 1:
+        #    self.try_move_up()
+        #if y == 0:
+        #    self.try_move_left()
+        #if y == 1:
+        #   self.try_move_right()
         sc.blit(self.image, self.rect)
 
     def kill(self):
         for _ in range(10):
             pt = DeathParticle(self.rect.centerx, self.rect.centery, 300)
             self.particles.add(pt)
+        self.death_sound.play()
         super().kill()
         print("Enemy was killed!")
+
+    def reduce_hp(self, damage:int):
+        self.hp -= damage
+        if self.hp <= 0:
+            self.kill()
+        else:
+            self.hit_sound.stop()
+            self.hit_sound.play()
