@@ -193,6 +193,7 @@ class DeathState(State):
             self.clock.tick(75)
         
 class Level1State(State):
+    
     def __init__(self, sc: Surface):
         super().__init__(sc)
         self.enemy_dmg = 10
@@ -298,7 +299,10 @@ class Level1State(State):
                 powerUp.die()
     
     def run(self):
-        
+        pygame.mixer.music.stop()
+        pygame.mixer.music.unload()
+        pygame.mixer.music.load("assets/sfx/themep.wav")
+        pygame.mixer.music.play(1)
         waves = [
             self.add_enemy_wave_1,
             self.add_enemy_wave_2,
@@ -404,6 +408,11 @@ class Level2State(Level1State):
         self.should_change_state = True
     
     def run(self):
+        pygame.mixer.music.stop()
+        pygame.mixer.music.unload()
+        pygame.mixer.music.load("assets/sfx/themept2.wav")
+        pygame.mixer.music.play(10)
+        
         clock = pygame.time.Clock()
         running = True
 

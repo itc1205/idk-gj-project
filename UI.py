@@ -135,7 +135,6 @@ class DialogueWindow():
             
             if self.text[self.cur_index] in (self.chars_timing.keys()):
                 self.wait_time = self.chars_timing[self.text[self.cur_index]]
-                print(self.wait_time)
             if self.text[self.cur_index] not in self.unaudible_chars:
                 choice(self.sounds).play()
             self.cur_index += 1
