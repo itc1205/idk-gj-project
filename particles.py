@@ -50,7 +50,7 @@ class BulletParticle(Particle):
     def __init__(self, x, y, lifetime):
         super().__init__(x, y, lifetime)
         self.image.fill(THEME.RED)
-        self.vel_y = randint(1, 2)
+        self.vel_y = randint(0, 2)
         self.vel_x = randint(-1, 1)
 
 def sign(number):
@@ -82,7 +82,6 @@ class DeathParticle(Particle):
         
         if self.dt > self.lifetime:
             self.die()
-
 
 class SpaceshipParticle(Particle):
     def __init__(self, x, y, lifetime):

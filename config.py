@@ -11,7 +11,7 @@ class THEME:
     YELLOW = (251, 229, 172)
     RED = (255, 105, 97)
     GREEN = (139, 172, 15)
-
+    BLUE = (130, 166, 221)
 
 class FORMULAS:
     NORMALIZE_ALPHA = lambda x: x % 255

@@ -1,5 +1,6 @@
+from UI import Score
 from init import init_window
-from states import STATES
+from states import STATES, Level2State, SecondCutscene
 import pygame
 
 class Game:
