@@ -6,7 +6,7 @@ class CFG:
 
 
 class THEME:
-    WHITE = (230, 234, 235)
+    WHITE = (230, 230, 230)
     BLACK = (47, 51, 54)
     YELLOW = (251, 229, 172)
     RED = (255, 105, 97)
