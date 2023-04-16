@@ -100,25 +100,27 @@ class SecondCutscene(FirstCutscene):
 class DeathState(State):
     my_font = pygame.font.Font("assets/font/Minecraft.ttf", 20)
     
-    prev_score = 0
     
-    if not os.path.exists("score.txt"):
-        with open("score.txt", "w") as f:
-            try:
-                f.write("0")
-            except Exception as e:
-                print(f"Error while parsing score file: {e}")
-    
-    with open("score.txt", "r") as f:
-        try:
-            score = f.readline()
-            prev_score = int(score)
-        except Exception as e:
-            print(f"Error while parsing score file: {e}")
 
     
     def __init__(self, screen: Surface, score: int):
         super().__init__(screen)
+        
+        self.prev_score = 0
+    
+        if not os.path.exists("score.txt"):
+            with open("score.txt", "w") as f:
+                try:
+                    f.write("0")
+                except Exception as e:
+                    print(f"Error while parsing score file: {e}")
+
+        with open("score.txt", "r") as f:
+            try:
+                prev_score = int(f.readline())
+            except Exception as e:
+                print(f"Error while parsing score file: {e}")
+            
         self.clock = pygame.time.Clock()
         self.score = score
         self.dg = None
@@ -302,6 +304,7 @@ class Level1State(State):
         pygame.mixer.music.stop()
         pygame.mixer.music.unload()
         pygame.mixer.music.load("assets/sfx/themep.wav")
+        pygame.mixer.music.set_volume(0.8)
         pygame.mixer.music.play(1)
         waves = [
             self.add_enemy_wave_1,
@@ -411,6 +414,7 @@ class Level2State(Level1State):
         pygame.mixer.music.stop()
         pygame.mixer.music.unload()
         pygame.mixer.music.load("assets/sfx/themept2.wav")
+        pygame.mixer.music.set_volume(0.5)
         pygame.mixer.music.play(10)
         
         clock = pygame.time.Clock()
@@ -688,6 +692,7 @@ class MainMenuState(State):
         pygame.mixer.music.stop()
         pygame.mixer.music.unload()
         pygame.mixer.music.load("assets/sfx/mainmenu.wav")
+        pygame.mixer.music.set_volume(0.5)
         pygame.mixer.music.play(10)
         game_button = Button(
             10, 220 + (48 + 10) * 0, 460, 48, self.screen, "Play!", self.game_cb

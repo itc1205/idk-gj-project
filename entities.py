@@ -60,9 +60,11 @@ class EnemyBullet(Bullet):
 class Spaceship(Sprite):
     piu_sound = Sound("assets/sfx/piu.wav")
     death_sound = Sound("assets/sfx/playerdeath.wav")
-    piu_sound.set_volume(0.4)
+    death_sound.set_volume(0.2)
+    piu_sound.set_volume(0.2)
     image = load("assets/sprites/hero.png")
     hit_sound = Sound("assets/sfx/hits.wav")
+    hit_sound.set_volume(0.2)
     def __init__(self, x=100, y=100, pt: Group = Group(), bt: Group = Group()):
         Sprite.__init__(self)
         
@@ -173,8 +175,6 @@ class Spaceship(Sprite):
     
 class Enemy(Spaceship):
     image = load("assets/sprites/enemy.png")
-    death_sound = Sound("assets/sfx/playerdeath.wav")
-    hit_sound = Sound("assets/sfx/hits.wav")
     def __init__(self, x=10, y=10, h=20, w=20, pt: Group = Group(), bt: Group = Group(),pu: Group = Group(), hp:int = 100, dmg:int = 20):
         super().__init__(x, y, pt, bt)
         self.rect = self.image.get_rect()
@@ -289,8 +289,6 @@ class ShitEnemy(Enemy):
 class Boss(Enemy):
     
     image = pygame.transform.scale_by(load("assets/sprites/boss.png"), 2)
-    death_sound = Sound("assets/sfx/playerdeath.wav")
-    hit_sound = Sound("assets/sfx/hits.wav")
     def __init__(self, x=10, y=10, h=20, w=20, pt: Group = Group(), bt: Group = Group(), pu: Group = Group(), hp: int = 1000):
         super().__init__(x, y, h, w, pt=pt, bt=bt, hp=hp, pu=pu)
         self.damage = 50
@@ -327,7 +325,7 @@ class PowerUP(Sprite):
     heal_image = pygame.image.load("assets/sprites/heal.png")
     
     pUp_sound = pygame.mixer.Sound("assets/sfx/pspawn.wav")
-    
+    pUp_sound.set_volume(0.2)
     def __init__(self, x, y) -> None:
         super().__init__()
         self.type = 0
